@@ -1,0 +1,64 @@
+.switch {
+    height: 27px;
+    position: relative;
+}
+.switch input[type="checkbox"] {
+    display: none;
+}
+.switch input[type="checkbox"]:disabled + label {
+    opacity: 0.5;
+}
+.switch label {
+    color: #f9f9f9;
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 0;
+    font-size: 0;
+    left: 0 !important;
+}
+.switch input[type="checkbox"] + label::before {
+    content: ' ';
+    display: block;
+    height: 24px;
+    width: 46px;
+    border-radius: 20px;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    background: #f26a26;
+}
+.switch input[type="checkbox"] + label::after {
+    content: ' ';
+    display: block;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    position: absolute;
+    top: 4px;
+    left: 25px;
+    background: #f9f9f9;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease-in;
+}
+.switch input[type="checkbox"]:checked + label::after {
+    left: 2px;
+    transition: all 0.2s ease-in;
+}
+.switch.switch-off input[type="checkbox"] + label::before {
+    background: #c9c9c9;
+}
+.switch.switch-off input[type=checkbox] + label::after {
+    left: 2px;
+    transition: all 0.2s ease-in;
+}
+.switch.switch-on input[type="checkbox"] + label::before {
+    background: #f26a26;
+}
+.switch.switch-on input[type=checkbox]:checked + label::after {
+    transition: all 0.2s ease-in;
+    left: 25px;
+}
+
+
+
+
