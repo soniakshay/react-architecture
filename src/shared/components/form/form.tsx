@@ -2,8 +2,6 @@ import React, {
   useRef,
   useImperativeHandle,
   forwardRef,
-  useState,
-  useEffect,
 } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,24 +10,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Input from './form-components/input/input';
 import Number from './form-components/number/number';
 import Password from './form-components/password/password';
-// import Input from './input/input';
-// import Number from './number/number';
-// import Password from './password/password';
 import Textarea from './form-components/textarea/textarea';
 import Checkbox from './form-components//checkbox/checkbox';
 import Radio from './form-components/radio/radio';
 import SelectList from './form-components/select/select';
-// import Datepicker from './form-components/datepicker/datepicker';
-// import Daterangepicker from './daterangepicker/daterangepicker';
-// import MaskInput from './mask/mask';
-// import ControllerField from './controller/controller';
-// import HiddenField from './hidden/hidden';
-// import GoogleAutocomplete from './google-autocomplete/google-autocomplete';
-// import CanIHavePermission from '../can-i-have-permissions/can-i-have-permission';
-// import PercentagInput from './percentage-input/percentage-input';
-// import CurrencyInput from './currency-input/currency-input';
-// import IpAddressInput from './ipAddress-input/ipAddress-input';
-// import CustomDateRangePicker from './customDateRangePicker/customDateRangePicker';
+
 import Switch from './form-components/switch/switch';
 import DatepickerInput from './form-components/datepicker/datepicker';
 
@@ -37,8 +22,7 @@ function ItemBlock({
   label,
   type,
   blocktype,
-  actions = [],
-  hide = true,
+
   ...props
 }: any) {
   const typeArr = {
@@ -80,7 +64,7 @@ function ItemBlock({
   return <>{formElement()}</>;
 }
 
-function FormItems({ fields }) {
+export function FormItems({ fields }) {
   console.log('fields', fields);
   return (
     <div className={'formMain'}>
@@ -111,14 +95,9 @@ function Form(props, ref) {
   const methods = useForm({ ...formOptions, mode: 'all' });
 
   useImperativeHandle(ref, () => ({
-    submit(invalidStatusCallback = null) {
+    submit() {
       if (submitRef.current !== null) {
         submitRef.current.click();
-      }
-      if (invalidStatusCallback !== null) {
-        setTimeout(() => {
-          invalidStatusCallback(methods.formState.isValid);
-        }, 500);
       }
     },
     resetFieldWithError(field, defaultValue) {
@@ -157,7 +136,7 @@ function Form(props, ref) {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <FormItems fields={formItems} />
+        {/*<FormItems fields={formItems} />*/}
         {children}
         <input type="submit" style={{ display: 'none' }} ref={submitRef} />
       </form>

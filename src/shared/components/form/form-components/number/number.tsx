@@ -1,85 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import NumberFormat from "react-number-format";
-import { maxAllowedNumber } from "@/src/shared/utils/utils";
+import React from 'react';
+import { useFormContext, Controller } from 'react-hook-form';
+import { NumericInput } from '@blueprintjs/core';
 
-// @typescript-eslint/no-loss-of-precision
-export default function Number({
-  name,
-  onChange,
-  maxlength = 16,
-  minimumValue = 1,
-  disabled = false,
-  decimalScale,
-  ...props
-}) {
+
+
+export const NumberInputEle = (elementProps: any) => {
+  return (
+    <NumericInput
+      buttonPosition={'none'}
+      {...elementProps}
+    />
+  );
+};
+
+export default function Input({ name, onChange, ...props }: any) {
   const {
     register,
-    formState: { errors },
     control,
-  } = useFormContext(); // retrieve all hook methods
-  const [max, setMax] = useState(maxAllowedNumber(16));
-  useEffect(() => {
-    setMax(maxAllowedNumber(16));
-  }, [maxlength]);
+    formState: { errors },
+  }: any = useFormContext(); // retrieve all hook methods
+  const elementProps = {
+    name: name,
+    ...props,
+    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
+    className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
+  };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <>
+
       <Controller
         control={control}
         {...register(name)}
         {...props}
-        render={({ field }) => {
-          return (
-            <>
-              <NumberFormat
-                disabled={disabled}
-                name={name}
-                className={`form-control  ${
-                  errors?.[name] ? "is-invalid" : ""
-                }`}
-                thousandSeparator={true}
-                allowNegative={false}
-                decimalScale={decimalScale}
-                fixedDecimalScale={true}
-                isNumericString={true}
-                defaultValue={field.value}
-                onValueChange={(value) => {
-                  if (onChange) {
-                    onChange(
-                      value.floatValue !== null ? value.floatValue : null
-                    );
-                  }
-                  return field.onChange(
-                    value.floatValue !== null ? value.floatValue : null
-                  );
-                }}
-                // Check whether input should be allowed or not
-                isAllowed={(values) => {
-                  //  Extract floatValue
-                  const { floatValue } = values;
-                  // If value there and either min or max provided
-                  if (
-                    (floatValue || floatValue === 0) &&
-                    (minimumValue !== null || max !== null)
-                  ) {
-                    if (minimumValue === null) {
-                      //  If min is not there then only check for max
-                      return floatValue <= max;
-                    } else if (max === null) {
-                      //  If max is not there then only check for min
-                      return floatValue >= minimumValue;
-                    } else {
-                      // Check for both if both of them are there
-                      return floatValue >= minimumValue && floatValue <= max;
-                    }
-                  }
-                  return true;
-                }}
-              />
-            </>
-          );
-        }}
+        render={({ field: { onChange : onChnageValue, value } }) => (
+          <NumberInputEle
+            {...elementProps}
+            value={value}
+            onValueChange={(event: any) => {
+              onChnageValue(event);
+              if (elementProps?.onChange) {
+                elementProps.onChange(event);
+              }
+            }}
+          />
+        )}
       />
       {errors?.[name]?.message ? (
         <span className="error-msg m-t-8">{errors?.[name]?.message}</span>

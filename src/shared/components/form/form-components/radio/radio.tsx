@@ -1,45 +1,65 @@
-import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import React, { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { RadioGroup as BRadioGroup, Radio as BRadio } from '@blueprintjs/core';
 
-export default function Radio({ name, onChange, values, ...props }) {
+
+
+
+export const RadioEle = (elementProps: any) => {
+  const { values, onChange } = elementProps;
+  const [selectedValue, setSelectedValue] = useState(null);
+  return (
+    <BRadioGroup
+      {...elementProps}
+      selectedValue={selectedValue}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e);
+        setSelectedValue(e.target.value);
+      }}
+    >
+      {
+        values.map(({ label, value }) => {
+          return (
+            <BRadio label={label} value={value} />
+          );
+        })
+      }
+
+    </BRadioGroup>
+  );
+};
+export default function Radio({ name, onChange, ...props }) {
   const {
     register,
-    setValue,
     control,
-    getValues,
     formState: { errors },
-  } = useFormContext(); // retrieve all hook methods
-
+  }: any = useFormContext(); // retrieve all hook methods
+  const elementProps = {
+    name: name,
+    ...props,
+    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
+    className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
+  };
   return (
     <>
       <Controller
         control={control}
         {...register(name)}
         {...props}
-        render={() => {
-          return (
-            <div className="radio-main">
-              {values.map(({ id, label }) => (
-                <div>
-                  <input
-                    type="radio"
-                    value={id}
-                    key={`radio_${id}`}
-                    {...register(name)}
-                    {...props}
-                    onChange={(event) => {
-                      onChange ? onChange(event.target.value) : null;
-                    }}
-                    className={`form-control ${
-                      errors?.[name] ? "is-invalid" : ""
-                    }`}
-                  />
-                  <label>{label}</label>
-                </div>
-              ))}
-            </div>
-          );
-        }}
+        render={({ field: { onChange: onChangeValue, value } } : any) => (
+          <>
+            <RadioEle
+              {...elementProps}
+              value={value}
+              onChange={(event: any) => {
+                onChangeValue(event);
+                if (elementProps?.onChange) {
+                  elementProps.onChange(event);
+                }
+              }}
+            />
+          </>
+        )}
       />
       {errors?.[name]?.message ? (
         <span className="error-msg m-t-8">{errors?.[name]?.message}</span>

@@ -12,6 +12,10 @@ module.exports = {
     project: './tsconfig.json',
   },
   rules: {
+    'import/no-unresolved': [
+      2,
+      { 'caseSensitive': false },
+    ],
     'no-underscore-dangle': 'off',
     'react/static-property-placement':'off',
     'react/no-unused-state': 'off',

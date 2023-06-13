@@ -1,21 +1,21 @@
 export const maxAllowedNumber = (noOfDigits = 1) => {
-  return Number("9".repeat(noOfDigits));
+  return Number('9'.repeat(noOfDigits));
 };
 
 export const sortByPropertyInObject = (property: string) => {
   return (a: { [key: string]: any }, b: { [key: string]: any }) =>
     a[String(property)].localeCompare(b[String(property)]);
 };
-const dot = (color = "transparent") => ({
-  alignItems: "center",
-  display: "flex",
+const dot = (color = 'transparent') => ({
+  alignItems: 'center',
+  display: 'flex',
 
-  ":before": {
+  ':before': {
     backgroundColor: color,
     borderRadius: 10,
     content: '" "',
-    display: "block",
-    marginRight: "0px",
+    display: 'block',
+    marginRight: '0px',
     height: 10,
     width: 8,
   },
@@ -31,7 +31,7 @@ export const customStyleSelect = (
     option: {},
     input: {},
     singleValue: {},
-  }
+  },
 ) => {
   return {
     indicatorsContainer: (styles) => ({
@@ -42,31 +42,31 @@ export const customStyleSelect = (
     }),
     placeholder: (styles) => ({
       ...styles,
-      fontSize: "14px",
-      color: "#9B9B9B",
+      fontSize: '14px',
+      color: '#9B9B9B',
       marginLeft: 10,
       ...style.placeholder,
     }),
     control: (styles, { isDisabled }) => ({
       ...styles,
-      borderColor: errors?.[name]?.message ? "#DA1E28" : "#E8E8E8",
-      cursor: isDisabled ? "not-allowed" : "default",
-      backgroundColor: isDisabled ? "#E8E8E8" : "white",
-      color: isDisabled ? "#9B9B9B" : "white",
-      "&:hover": {
-        borderColor: errors?.[name]?.message ? "#DA1E28" : "hsl(0, 0%, 80%)",
+      borderColor: errors?.[name]?.message ? '#DA1E28' : '#E8E8E8',
+      cursor: isDisabled ? 'not-allowed' : 'default',
+      backgroundColor: isDisabled ? '#E8E8E8' : 'white',
+      color: isDisabled ? '#9B9B9B' : 'white',
+      '&:hover': {
+        borderColor: errors?.[name]?.message ? '#DA1E28' : 'hsl(0, 0%, 80%)',
       },
-      fontSize: "14px",
-      boxShadow: errors?.[name]?.message ? "#DA1E28" : "hsl(0, 0%, 80%)",
+      fontSize: '14px',
+      boxShadow: errors?.[name]?.message ? '#DA1E28' : 'hsl(0, 0%, 80%)',
       // @ts-ignore
-      borderColor: errors?.[name]?.message ? "#DA1E28" : "hsl(0, 0%, 80%)",
+      borderColor: errors?.[name]?.message ? '#DA1E28' : 'hsl(0, 0%, 80%)',
       ...style.control,
     }),
     menu: (provided, state) => ({
       ...provided,
       width: state.selectProps.width,
-      border: "1px dotted #E8E8E8",
-      color: state.isSelected ? "#F26A26" : "#1F1F1F",
+      border: '1px dotted #E8E8E8',
+      color: state.isSelected ? '#F26A26' : '#1F1F1F',
       zIndex: 2,
       control: (_, { selectProps: { width } }) => ({
         width: width,
@@ -76,12 +76,12 @@ export const customStyleSelect = (
     option: (provided, state) => ({
       ...provided,
       borderBottom: 0,
-      color: state.isSelected ? "#F26A26" : "#1F1F1F",
-      backgroundColor: state.isSelected ? "#F9F9F9" : "#ffffff",
-      padding: "12px 16px",
+      color: state.isSelected ? '#F26A26' : '#1F1F1F',
+      backgroundColor: state.isSelected ? '#F9F9F9' : '#ffffff',
+      padding: '12px 16px',
       fontSize: 14,
-      "&:hover": {
-        backgroundColor: "#F9F9F9",
+      '&:hover': {
+        backgroundColor: '#F9F9F9',
         // color: "#F26A26",
       },
       ...style.option,
@@ -91,8 +91,8 @@ export const customStyleSelect = (
     },
     singleValue: (styles, { data }) => ({
       ...styles,
-      marginRight: "0px",
-      fontSize: "14px",
+      marginRight: '0px',
+      fontSize: '14px',
       ...dot(data.color),
       ...style.singleValue,
     }),
@@ -103,7 +103,7 @@ export const customStyleSelect = (
 export const IsValidUSPhoneNumber = (value) => {
   if (value) {
     const regex = new RegExp(
-      "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$"
+      '^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$',
     );
     return value.match(regex);
   }
@@ -111,7 +111,7 @@ export const IsValidUSPhoneNumber = (value) => {
 };
 export const IsValidEmail = (value) => {
   if (value) {
-    const regex = new RegExp("^$|^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    const regex = new RegExp('^$|^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$');
     return value.match(regex);
   }
   return false;
@@ -119,10 +119,10 @@ export const IsValidEmail = (value) => {
 
 export const formatDate = (date) => {
   return new Date(date)
-    .toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    .toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     })
     .toString();
 };
@@ -130,47 +130,47 @@ export const formatDate = (date) => {
 export const formatCreatedDate = (
   date,
   displaySeconds = false,
-  isShowLocalTime = true
+  isShowLocalTime = true,
 ) => {
   // if is show utc string
   if (!isShowLocalTime) {
     if (displaySeconds) {
-      return moment(date).utc().format("MMM D, YYYY, HH:mm:ss A");
+      return moment(date).utc().format('MMM D, YYYY, HH:mm:ss A');
       // return  new Date(date).toUTCString();
     }
-    return moment(date).utc().format("MMM D, YYYY, HH:mm:ss A");
+    return moment(date).utc().format('MMM D, YYYY, HH:mm:ss A');
     // return  new Date(date).toUTCString();
   }
 
   if (displaySeconds) {
     return new Date(date)
-      .toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        second: "2-digit",
+      .toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
         hour12: true,
       })
       .toString();
   }
   return new Date(date)
-    .toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
+    .toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
       hour12: true,
     })
     .toString();
 };
 
 export const getRandomString = (length = 16) => {
-  let text = "";
+  let text = '';
   const possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < length; i += 1) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
@@ -182,7 +182,7 @@ export const capitalizeFirstLetter = (string: string) => {
 };
 
 export const IsValidPostalZipOrPostalCode = (value) => {
-  const regex = new RegExp("^\\d{5}(?:[-\\s]\\d{4})?$");
+  const regex = new RegExp('^\\d{5}(?:[-\\s]\\d{4})?$');
   return value.match(regex);
 };
 
@@ -200,8 +200,8 @@ export const uniqueValueFromArray = (value, index, self) => {
 };
 export const formatNumber = (num) => {
   // return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  const formatter = new Intl.NumberFormat("en-US", {
-    currency: "USD",
+  const formatter = new Intl.NumberFormat('en-US', {
+    currency: 'USD',
   });
   return formatter.format(num);
 };

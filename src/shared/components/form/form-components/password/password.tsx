@@ -1,20 +1,52 @@
-import React from "react";
-import { useFormContext } from "react-hook-form";
+import React from 'react';
+import { useFormContext, Controller } from 'react-hook-form';
+import { InputGroup } from '@blueprintjs/core';
+import ReactDatePicker from 'react-datepicker';
 
-export default function Password({ name, onChange, ...props }) {
+
+export const PasswordInputEle = (elementProps: any) => {
+  return (
+    <InputGroup
+      type={'password'}
+      {...elementProps}
+    />
+  );
+};
+
+export default function Password({ name, onChange, ...props }: any) {
   const {
     register,
+    control,
     formState: { errors },
-  } = useFormContext(); // retrieve all hook methods
+  }: any = useFormContext(); // retrieve all hook methods
+  const elementProps = {
+    name: name,
+    ...props,
+    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
+    className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
+  };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <>
-      <input
-        type="password"
+
+      <Controller
+        control={control}
         {...register(name)}
         {...props}
-        onChange={(event) => (onChange ? onChange(event.target.value) : null)}
-        className={`form-control ${errors?.[name] ? "is-invalid" : ""}`}
+        render={({ field: { onChange: onChangeValue, value } }) => (
+          <PasswordInputEle
+            {...elementProps}
+            value={value}
+            onChange={(event: any) => {
+              onChangeValue(event);
+              if (elementProps?.onChange) {
+                elementProps.onChange(event);
+              }
+            }}
+          />
+        )}
       />
       {errors?.[name]?.message ? (
         <span className="error-msg m-t-8">{errors?.[name]?.message}</span>

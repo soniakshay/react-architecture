@@ -1,63 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import React from 'react';
+import { useFormContext, Controller } from 'react-hook-form';
+import { Switch as BLuePrintSwitch } from '@blueprintjs/core';
+import ReactDatePicker from 'react-datepicker';
 
-export default function Switch({
-  name,
-  onChange,
-  isDefaultValueSelect,
-  values,
-  ...props
-}) {
+
+export const SwichEle = (elementProps: any) => {
+  return (
+    <BLuePrintSwitch
+      {...elementProps}
+    />
+  );
+};
+
+export default function Switch({ name, onChange, ...props }: any) {
   const {
     register,
-    formState: { errors },
-    setValue,
-    getValues,
     control,
+    formState: { errors },
   } = useFormContext(); // retrieve all hook methods
-  const [isChecked, setChecked] = useState(false);
+  const elementProps = {
+    name: name,
+    ...props,
+    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
+    className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
+  };
 
-  useEffect(() => {
-    if (isDefaultValueSelect) {
-      setChecked(true);
-      setValue(name, true);
-    }
-  }, [isDefaultValueSelect]);
-
+  // @ts-ignore
+  // @ts-ignore
   return (
     <>
+
       <Controller
         control={control}
         {...register(name)}
         {...props}
-        render={() => {
-          return (
-            <div
-              className={`switchInput ${
-                isChecked ? "switch switch-on" : "switch switch-off"
-              }`}
-            >
-              <input
-                type="checkbox"
-                id={"switchInput-checkbox"}
-                name={name}
-                {...register(name)}
-                checked={isChecked}
-                value={isChecked ? "true" : "false"}
-                onChange={(event) => {
-                  setChecked(!isChecked);
-                  setValue(name, !isChecked);
-                  console.log(event.target.value);
-                  if (onChange) {
-                    onChange(!isChecked);
-                  }
-                }}
-                className={`form-control ${errors?.[name] ? "is-invalid" : ""}`}
-              />
-              <label htmlFor={"switchInput-checkbox"}></label>
-            </div>
-          );
-        }}
+        render={({ field: { onChange, onBlur, value, ref } }) => (
+          <SwichEle
+            {...elementProps}
+            value={value}
+            onChange={(event: any) => {
+              onChange(event);
+              if (elementProps?.onChange) {
+                elementProps.onChange(event);
+              }
+            }}
+          />
+        )}
       />
       {errors?.[name]?.message ? (
         <span className="error-msg m-t-8">{errors?.[name]?.message}</span>

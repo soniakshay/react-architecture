@@ -1,5 +1,5 @@
-import React from "react";
-import { useFormContext } from "react-hook-form";
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 export function SingleCheckbox({ name, onChange = null, value, ...props }) {
   const {
@@ -17,7 +17,7 @@ export function SingleCheckbox({ name, onChange = null, value, ...props }) {
       onChange={(event) =>
         onChange ? onChange(event.target.checked, event.target.value) : null
       }
-      className={`form-control ${errors?.[name] ? "is-invalid" : ""}`}
+      className={`form-control ${errors?.[name] ? 'is-invalid' : ''}`}
     />
   );
 }
@@ -26,8 +26,7 @@ export default function Checkbox({ name, onChange, values, ...props }) {
   const {
     register,
     formState: { errors },
-  } = useFormContext(); // retrieve all hook methods
-
+  }: any = useFormContext(); // retrieve all hook methods
   return (
     <>
       {values.map(({ id, label }) => (
@@ -41,7 +40,7 @@ export default function Checkbox({ name, onChange, values, ...props }) {
             onChange={(event) =>
               onChange ? onChange(event.target.value) : null
             }
-            className={`form-control ${errors?.[name] ? "is-invalid" : ""}`}
+            className={`form-control ${errors?.[name] ? 'is-invalid' : ''}`}
           />
           <span>{label}</span>
           {errors?.[name]?.message ? (

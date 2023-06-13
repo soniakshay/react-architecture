@@ -1,135 +1,51 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import React from 'react';
+import { useFormContext, Controller } from 'react-hook-form';
+import { InputGroup, TextArea } from '@blueprintjs/core';
+import ReactDatePicker from 'react-datepicker';
 
-// import classes from './textarea.module.scss';
 
-export function TextAreaBasic({
-  register = null,
-  name,
-  onChangeInput = null,
-  rows,
-  cols,
-  maxCharacter,
-  isDisplayCharCount = true,
-  defaultValue = "",
-  errors,
-  ...props
-}) {
-  const [value, setValue] = useState("");
-  const [isRegister, setRegister] = useState(false);
-  const textRef = useRef(null);
-
-  useEffect(() => {
-    setValue(defaultValue);
-    if (textRef.current) {
-      textRef.current.value = defaultValue;
-    }
-  }, [defaultValue]);
-
-  useEffect(() => {
-    if (register) {
-      setRegister(true);
-    }
-  }, []);
-
+export const TextAreaEle = (elementProps: any) => {
   return (
-    <div className="pos-rlt textareamain">
-      {isRegister ? (
-        <>
-          <textarea
-            {...register(name)}
-            rows={rows}
-            name={name}
-            // @ts-ignore
-            className={`textarea ${errors?.[name] ? "is-invalid" : ""}`}
-            cols={cols}
-            onChange={(event) => {
-              let val = "";
-              if (event.target.value.length <= maxCharacter) {
-                val = event.target.value;
-              } else {
-                val = event.target.value.substring(0, maxCharacter);
-              }
-              if (setValue) setValue(val);
-              if (onChangeInput) onChangeInput(val);
-            }}
-            {...props}
-          />
-          {isDisplayCharCount && (
-            <span className="maxcharactersection">
-              {value ? value.length : 0}/{maxCharacter}
-            </span>
-          )}
-        </>
-      ) : (
-        <>
-          <textarea
-            rows={rows}
-            name={name}
-            ref={textRef}
-            value={value}
-            // @ts-ignore
-            className={`textarea ${errors?.[name] ? "is-invalid" : ""}`}
-            cols={cols}
-            onChange={(event) => {
-              let val = "";
-              if (event.target.value.length <= maxCharacter) {
-                val = event.target.value;
-              } else {
-                val = event.target.value.substring(0, maxCharacter);
-              }
-              if (setValue) setValue(val);
-              if (onChangeInput) onChangeInput(val);
-            }}
-            {...props}
-          />
-          {isDisplayCharCount && (
-            <span className="maxcharactersection">
-              {value ? value.length : 0}/{maxCharacter}
-            </span>
-          )}
-        </>
-      )}
-    </div>
+    <TextArea
+      {...elementProps}
+    />
   );
-}
+};
 
-export default function TextArea({
-  name,
-  onChange,
-  rows,
-  cols,
-  isDisplayCharCount = true,
-  maxCharacter = 180,
-  ...props
-}) {
-  const [defaultValue, setDefaultValue] = useState("");
+export default function Textarea({ name, onChange, ...props }: any) {
   const {
     register,
-    getValues,
+    control,
     formState: { errors },
   } = useFormContext(); // retrieve all hook methods
+  const elementProps = {
+    name: name,
+    ...props,
+    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
+    className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
+  };
 
-  useEffect(() => {
-    const data = getValues();
-    if (data[name] !== undefined) {
-      setDefaultValue(data[name]);
-    }
-  }, []);
-
+  // @ts-ignore
+  // @ts-ignore
   return (
     <>
-      <TextAreaBasic
-        register={register}
-        name={name}
-        onChangeInput={onChange}
-        rows={rows}
-        cols={cols}
-        isDisplayCharCount={isDisplayCharCount}
-        maxCharacter={maxCharacter}
-        defaultValue={defaultValue}
-        errors={errors}
+
+      <Controller
+        control={control}
+        {...register(name)}
         {...props}
+        render={({ field: { onChange, onBlur, value, ref } }) => (
+          <TextAreaEle
+            {...elementProps}
+            value={value}
+            onChange={(event: any) => {
+              onChange(event);
+              if (elementProps?.onChange) {
+                elementProps.onChange(event);
+              }
+            }}
+          />
+        )}
       />
       {errors?.[name]?.message ? (
         <span className="error-msg m-t-8">{errors?.[name]?.message}</span>
