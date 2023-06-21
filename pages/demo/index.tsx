@@ -2,10 +2,15 @@ import * as Yup from 'yup';
 import React, { useEffect, useRef, useState } from 'react';
 import Form, { FormItems } from '../../src/shared/components/form/form';
 import { InputEle } from '../../src/shared/components/form/form-components/input/input';
+import { Modal } from '../../src/shared/components/modal/modal';
+import { Button } from '@blueprintjs/core';
+import { DataTable } from '../../src/shared/components/table/table';
+import { MaskInputEle } from '../../src/shared/components/form/form-components/mask-input/input-mask';
 
 const FormComponents = () => {
   const formRef = useRef(null);
   const [defaultValues, setDefultValues] = useState(null);
+  const [isOpen, setOpen]  = useState(false);
   const [validationSchemaObj, setValidationSchemaObj] = useState(null);
   const formState = [
     {
@@ -14,6 +19,14 @@ const FormComponents = () => {
       label: 'text',
       maxlength: 250,
       maxCharacter: 250,
+
+    },
+    {
+      name: 'mask',
+      type: 'mask',
+      label: 'mask',
+      mask: '999.999.999.999/99',
+      placeholder: 'Enter Ip Address',
 
     },
     {
@@ -111,6 +124,15 @@ const FormComponents = () => {
       isClearDate: true,
     },
   ];
+
+  const formState1 =   [{
+    name: 'name1',
+    type: 'input',
+    label: 'text',
+    maxlength: 250,
+    maxCharacter: 250,
+
+  }];
   useEffect(() => {
     // if (formRef && formRef.current) {
     //     formRef.current.submit();
@@ -125,16 +147,25 @@ const FormComponents = () => {
     <>
       <Form
         ref={formRef}
-        formItems={formState}
         defaultValues={{
 
         }}
-        validationSchema={Yup.object().shape({})}
+        validationSchema={Yup.object().shape({
+          // text:Yup.string().required('Owner is required.'),
+
+          mask: Yup.string()
+            .required('IP address is required')
+            .matches(
+              /^([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}$/,
+              'Invalid IP address with subnet',
+            ),
+        })}
         onSubmit={(data) => {
           console.log(data);
         }}
       >
         <FormItems fields={formState} />
+        <FormItems fields={formState1} />
 
 
       </Form>
@@ -146,12 +177,31 @@ const FormComponents = () => {
         Submit
       </button>
 
+      <Modal title={'Demo'} isOpen={isOpen}  closeDialog={() => {
+        setOpen(false);
+      }}>
+          <h1>This Demo Dialog</h1>
+      </Modal>
+      <Button onClick={() => {
+        setOpen(true);
+      }
+      }>Open Dialog</Button>
+
   <h1>Single element</h1>
       <InputEle
       className={'form-element'}
       onChange={() => {
       }}
       />
+
+      <DataTable/>
+
+
+      <MaskInputEle
+        mask={'999.999.999'}
+        placeholder={'Enter Ip Address'}
+      />
+
     </>
   );
 };

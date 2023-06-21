@@ -46,7 +46,7 @@ export const SelectInputEle = (elementProps: any) => {
         }
       }}
     >
-      <Button rightIcon="double-caret-vertical" text={selectedOption?.label} loading={false} placeholder="Select a Option" />
+      <Button rightIcon="double-caret-vertical" text={selectedOption?.label || 'Select Option'} loading={false} placeholder="Select a Option" />
 
 
     </Select2>

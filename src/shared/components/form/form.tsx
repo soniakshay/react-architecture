@@ -17,6 +17,7 @@ import SelectList from './form-components/select/select';
 
 import Switch from './form-components/switch/switch';
 import DatepickerInput from './form-components/datepicker/datepicker';
+import MaskInput from './form-components/mask-input/input-mask';
 
 function ItemBlock({
   label,
@@ -34,6 +35,7 @@ function ItemBlock({
     radio: Radio,
     select: SelectList,
     datePicker: DatepickerInput,
+    mask: MaskInput,
     // daterangepicker: Daterangepicker,
     // customDateRangePicker: CustomDateRangePicker,
     // mask: MaskInput,
@@ -84,9 +86,8 @@ export function FormItems({ fields }) {
 }
 
 function Form(props, ref) {
-  const { formItems, defaultValues, validationSchema, onSubmit, children } =
+  const { defaultValues, validationSchema, onSubmit, children } =
     props;
-  console.log(formItems);
   const submitRef = useRef(null);
   const formOptions = {
     defaultValues,
