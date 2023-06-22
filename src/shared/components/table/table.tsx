@@ -1,92 +1,55 @@
 import { Cell, Column, Table2, EditableCell, ColumnHeaderCell2, Utils } from '@blueprintjs/table';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Menu, MenuItem } from '@blueprintjs/core';
 import { orderBy } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
-export const DataTable = () => {
+
+
+interface ColumnConfigObject {
+  headerName: string,
+  isEditable: boolean,
+  key: string
+}
+
+interface DataTableProps {
+  gridDataService:(queryData: any) => Promise<any>;
+  columns: Array<ColumnConfigObject>
+}
+export const DataTable = ({ gridDataService, columns } : DataTableProps) => {
 
   // @ts-ignore
   const [tableData, setTableData]  = useState<[]>([]);
-  const [columnConfig, setColumnConfig] = useState<[]>([]);
+  const [columnConfig, setColumnConfig] = useState(columns);
   const [token, setToken] = useState(uuidv4());
 
-  const ieRefresh = () => {
-    setToken(null);
-    setTimeout(() => {
-      setToken(uuidv4());
-    }, 10);
+
+
+
+  const setGridData = async () => {
+    try {
+      const response: any =  await gridDataService({});
+      if (response && response.length) {
+        // @ts-ignore
+        setTableData([...response]);
+
+      } else {
+        // @ts-ignore
+        setTableData([...response]);
+
+      }
+
+    } catch   {
+      setTableData([]);
+    } finally {
+    }
   };
-  useEffect(() => {
-    // @ts-ignore
-    setTableData([
-      {
-        color: 'red',
-        value: '#f00',
-        num:10,
-      },
-      {
-        color: 'green',
-        value: '#0f0',
-        num:1,
-      },
-      {
-        color: 'blue',
-        value: '#00f',
-        num:8,
-      },
-      {
-        color: 'cyan',
-        value: '#0ff',
-        num:8,
-      },
-      {
-        color: 'magenta',
-        value: '#f0f',
-        num:52,
-      },
-      {
-        color: 'yellow',
-        value: '#ff0',
-        num:9,
-      },
-      {
-        color: 'black',
-        value: '#000',
-        num:40,
-      },
-      {
-        color: 'black1',
-        value: '#000',
-        num:20,
-      },
-
-    ]);
-
-    setColumnConfig([
-      {
-        'headerName': 'Colour',
-        'isEditable': false,
-        'key':'color',
-      },
-
-      {
-        'headerName': 'Rank',
-        'key':'num',
-        'isEditable': false,
-      },
-    ]);
-  }, []);
-
-
 
 
   const cellRenderer = ({ value }) => (
     <Cell>{value}</Cell>
   );
-
   const editableCell = ({ value }) => (
-
     <EditableCell
       value={value}
       onConfirm={() => {
@@ -96,11 +59,11 @@ export const DataTable = () => {
   );
   const menuRender = ({ key }) => {
     const sortAsc = ({ key }: string) => {
-      const cloneTableData = orderBy(tableData, key, ['asc']);
+      const cloneTableData : any = orderBy(tableData, key, ['asc']);
       setTableData([...cloneTableData]);
     };
     const sortDesc = ({ key }) => {
-      const cloneTableData = orderBy(tableData, key, ['desc']);
+      const cloneTableData: any = orderBy(tableData, key, ['desc']);
       setTableData([...cloneTableData]);
     };
     return (
@@ -118,37 +81,55 @@ export const DataTable = () => {
     if (oldIndex === newIndex) {
       return;
     }
-    const columns: any = Utils.reorderArray(columnConfig, oldIndex, newIndex, length);
-    setColumnConfig([...columns]);
-    ieRefresh();
+    const reArrangeColumns: any = Utils.reorderArray(columnConfig, oldIndex, newIndex, length);
+    setColumnConfig([...reArrangeColumns]);
+    setToken(uuidv4());
   };
+  useEffect(() => {
+    setColumnConfig(columns);
+
+    (async  () => {
+      await setGridData();
+    })();
+  }, []);
+
+
+
+  const renderTable = useMemo(() => {
+    return (
+        <Table2 numRows={tableData.length}
+                enableFocusedCell={true}
+                enableColumnReordering={true}
+                enableColumnResizing={false}
+                enableRowReordering={true}
+                enableRowResizing={false}
+                onColumnsReordered={handleRowsReordered}
+                enableMultipleSelection={true}>
+          {
+            columnConfig.map(({ key, isEditable = false, headerName }) => {
+              return (
+
+                <Column name={key}
+
+                        columnHeaderCellRenderer={() => {
+                          return  columnHeaderCellRenderer({ headerName: headerName || key, key: key });
+                        }}
+                        cellRenderer={(rowIndex) => {
+
+                          return isEditable ?  editableCell({ value: tableData[rowIndex][key] }) :   cellRenderer({ value: tableData[rowIndex][key] });
+                        }} />
+
+              );
+            })
+          }
+        </Table2>
+    );
+  }, [tableData, token]);
 
   return (
-    <Table2 numRows={tableData.length}
-            enableFocusedCell={true}
-            enableColumnReordering={true}
-            enableColumnResizing={false}
-            enableRowReordering={true}
-            enableRowResizing={false}
-            onColumnsReordered={handleRowsReordered}
-            enableMultipleSelection={true}>
-      {
-        token && columnConfig.map(({ key, isEditable = false, headerName }) => {
-          return (
+    <>
+      {renderTable}
 
-            <Column name={key}
-
-                    columnHeaderCellRenderer={() => {
-                      return  columnHeaderCellRenderer({ headerName: headerName || key, key: key });
-                    }}
-                    cellRenderer={(rowIndex) => {
-
-                      return isEditable ?  editableCell({ value: tableData[rowIndex][key] }) :   cellRenderer({ value: tableData[rowIndex][key] });
-                    }} />
-
-          );
-        })
-      }
-    </Table2>
+        </>
   );
 };

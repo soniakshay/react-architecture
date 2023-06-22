@@ -12,6 +12,53 @@ const FormComponents = () => {
   const [defaultValues, setDefultValues] = useState(null);
   const [isOpen, setOpen]  = useState(false);
   const [validationSchemaObj, setValidationSchemaObj] = useState(null);
+
+
+  const getData = async () => {
+    return new Promise((resolve, reject) => {
+      resolve([ {
+        color: 'red',
+        value: '#f00',
+        num:10,
+      },
+      {
+        color: 'green',
+        value: '#0f0',
+        num:1,
+      },
+      {
+        color: 'blue',
+        value: '#00f',
+        num:8,
+      },
+      {
+        color: 'cyan',
+        value: '#0ff',
+        num:8,
+      },
+      {
+        color: 'magenta',
+        value: '#f0f',
+        num:52,
+      },
+      {
+        color: 'yellow',
+        value: '#ff0',
+        num:9,
+      },
+      {
+        color: 'black',
+        value: '#000',
+        num:40,
+      },
+      {
+        color: 'black1',
+        value: '#000',
+        num:20,
+      },
+      ]);
+    });
+  };
   const formState = [
     {
       name: 'text',
@@ -145,6 +192,7 @@ const FormComponents = () => {
   };
   return (
     <>
+      <h1>Form </h1>
       <Form
         ref={formRef}
         defaultValues={{
@@ -177,11 +225,16 @@ const FormComponents = () => {
         Submit
       </button>
 
+
+
+        <h1>Modal</h1>
+
       <Modal title={'Demo'} isOpen={isOpen}  closeDialog={() => {
         setOpen(false);
       }}>
-          <h1>This Demo Dialog</h1>
+        <h1>This Demo Dialog</h1>
       </Modal>
+
       <Button onClick={() => {
         setOpen(true);
       }
@@ -194,13 +247,35 @@ const FormComponents = () => {
       }}
       />
 
-      <DataTable/>
 
+        <br/>
 
       <MaskInputEle
         mask={'999.999.999'}
         placeholder={'Enter Ip Address'}
       />
+
+
+
+      <h1>
+        Table Data
+      </h1>
+      <DataTable
+        columns={[
+          {
+            'headerName': 'Colour',
+            'isEditable': false,
+            'key':'color',
+          },
+
+          {
+            'headerName': 'Rank',
+            'key':'num',
+            'isEditable': false,
+          },
+        ]}
+
+        gridDataService={getData}/>
 
     </>
   );
