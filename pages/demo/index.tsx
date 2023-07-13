@@ -392,8 +392,16 @@ const FormComponents = () => {
       </button>
       <SideDrawer
         ref={ref}
+        title={'Header'}
+        footer={
+          <>
+              <h3>Footer</h3>
+          </>
+        }
+
       >
-        <h2>Hello</h2>
+        <h2>Drawer Body</h2>
+
       </SideDrawer>
 
       <Button onClick={() => {

@@ -2,9 +2,10 @@
 import * as React from 'react';
 import {
 
-  Drawer, Position,
+  Drawer, Position, Classes,
 } from '@blueprintjs/core';
 import { forwardRef, ReactNode, useImperativeHandle, useState } from 'react';
+
 
 
 interface SideDrawerProps {
@@ -20,6 +21,7 @@ interface SideDrawerProps {
   children?: ReactNode,
   onClose?: () => void,
   title?: String,
+  footer? : ReactNode,
 }
 
 const SideDrawer = (props: SideDrawerProps, ref) => {
@@ -34,6 +36,7 @@ const SideDrawer = (props: SideDrawerProps, ref) => {
     size :  undefined,
     usePortal : true,
     transitionDuration:900,
+    ...props,
   };
 
   const openSideBar = () =>  {
@@ -65,8 +68,23 @@ const SideDrawer = (props: SideDrawerProps, ref) => {
       {...defaultProps}
 
     >
-      {props.children}
 
+      <div className={Classes.DRAWER_BODY}>
+        {/* HACKHACK: strange use of unrelated dialog class, should be refactored */}
+        <div className={Classes.DIALOG_BODY}>
+          {props.children}
+        </div>
+      </div>
+
+
+      {
+        props?.footer ? (
+          <div className={Classes.DRAWER_FOOTER}>
+
+            {props.footer}
+          </div>
+        ) : ''
+      }
     </Drawer>
   );
 
