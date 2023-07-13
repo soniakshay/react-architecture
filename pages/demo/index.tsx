@@ -6,13 +6,15 @@ import { Modal } from '../../src/shared/components/modal/modal';
 import { Button } from '@blueprintjs/core';
 import { DataTable } from '../../src/shared/components/table/table';
 import { MaskInputEle } from '../../src/shared/components/form/form-components/mask-input/input-mask';
+import SideDrawer from '../../src/shared/components/side-drawer';
+
 
 const FormComponents = () => {
   const formRef = useRef(null);
   const [defaultValues, setDefultValues] = useState(null);
   const [isOpen, setOpen]  = useState(false);
   const [validationSchemaObj, setValidationSchemaObj] = useState(null);
-
+  const ref = useRef(null);
 
   const getData = async () => {
     return new Promise((resolve, reject) => {
@@ -20,6 +22,146 @@ const FormComponents = () => {
         color: 'red',
         value: '#f00',
         num:10,
+      },
+      {
+        color: 'green',
+        value: '#0f0',
+        num:1,
+      },
+      {
+        color: 'blue',
+        value: '#00f',
+        num:8,
+      },
+      {
+        color: 'cyan',
+        value: '#0ff',
+        num:8,
+      },
+      {
+        color: 'magenta',
+        value: '#f0f',
+        num:52,
+      },
+      {
+        color: 'yellow',
+        value: '#ff0',
+        num:9,
+      },
+      {
+        color: 'black',
+        value: '#000',
+        num:40,
+      },
+      {
+        color: 'black1',
+        value: '#000',
+        num:20,
+      },
+      {
+        color: 'green',
+        value: '#0f0',
+        num:1,
+      },
+      {
+        color: 'blue',
+        value: '#00f',
+        num:8,
+      },
+      {
+        color: 'cyan',
+        value: '#0ff',
+        num:8,
+      },
+      {
+        color: 'magenta',
+        value: '#f0f',
+        num:52,
+      },
+      {
+        color: 'yellow',
+        value: '#ff0',
+        num:9,
+      },
+      {
+        color: 'black',
+        value: '#000',
+        num:40,
+      },
+      {
+        color: 'black1',
+        value: '#000',
+        num:20,
+      },
+      {
+        color: 'green',
+        value: '#0f0',
+        num:1,
+      },
+      {
+        color: 'blue',
+        value: '#00f',
+        num:8,
+      },
+      {
+        color: 'cyan',
+        value: '#0ff',
+        num:8,
+      },
+      {
+        color: 'magenta',
+        value: '#f0f',
+        num:52,
+      },
+      {
+        color: 'yellow',
+        value: '#ff0',
+        num:9,
+      },
+      {
+        color: 'black',
+        value: '#000',
+        num:40,
+      },
+      {
+        color: 'black1',
+        value: '#000',
+        num:20,
+      },
+      {
+        color: 'green',
+        value: '#0f0',
+        num:1,
+      },
+      {
+        color: 'blue',
+        value: '#00f',
+        num:8,
+      },
+      {
+        color: 'cyan',
+        value: '#0ff',
+        num:8,
+      },
+      {
+        color: 'magenta',
+        value: '#f0f',
+        num:52,
+      },
+      {
+        color: 'yellow',
+        value: '#ff0',
+        num:9,
+      },
+      {
+        color: 'black',
+        value: '#000',
+        num:40,
+      },
+      {
+        color: 'black1',
+        value: '#000',
+        num:20,
       },
       {
         color: 'green',
@@ -235,6 +377,25 @@ const FormComponents = () => {
         <h1>This Demo Dialog</h1>
       </Modal>
 
+
+      <h1>
+        Drawer
+      </h1>
+
+      <button onClick={() => {
+        if (ref.current) {
+          ref.current.open();
+        }
+
+      }}>
+        Open Sidebar
+      </button>
+      <SideDrawer
+        ref={ref}
+      >
+        <h2>Hello</h2>
+      </SideDrawer>
+
       <Button onClick={() => {
         setOpen(true);
       }
@@ -254,8 +415,6 @@ const FormComponents = () => {
         mask={'999.999.999'}
         placeholder={'Enter Ip Address'}
       />
-
-
 
       <h1>
         Table Data
